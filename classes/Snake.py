@@ -12,20 +12,6 @@ class Snake:
         self.centerPoint = externalCenterPoint
         self.direction = DIRECTION_UP
 
-    def live(self):
-        self.changeDirectionIfNeeded()
-        self.move()
-
-    def changeDirectionIfNeeded(self):
-        if self.centerPoint.y >= 460 and self.direction == DIRECTION_UP:
-            self.direction = DIRECTION_RIGHT
-        elif self.centerPoint.x >= 640 and self.direction == DIRECTION_RIGHT:
-            self.direction = DIRECTION_DOWN
-        elif self.centerPoint.y <= 0 and self.direction == DIRECTION_DOWN:
-            self.direction = DIRECTION_LEFT
-        elif self.centerPoint.x <= 0 and self.direction == DIRECTION_LEFT:
-            self.direction = DIRECTION_UP
-
     def move(self):
         movementSpeed = 100  # VALKA
 
