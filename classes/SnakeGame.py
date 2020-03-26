@@ -25,7 +25,6 @@ class SnakeGame(Layer):
 
         self.snake = Snake(snakeCenterPoint)
 
-
     def on_key_press(self, key, modifiers):
         if key == 119:
             self.snake.direction = DIRECTION_UP
@@ -46,7 +45,7 @@ class SnakeGame(Layer):
         self.snake.move()
 
         self.renderBeach()
-        self.renderSnake(self.snake.centerPoint)
+        self.renderSnake(self.snake)
 
     def clearScreen(self):
         for child in self.children:
@@ -92,20 +91,18 @@ class SnakeGame(Layer):
         self.renderLine(bottomLeftPoint, topLeftPoint, color)
         self.renderLine(bottomRightPoint, topRightPoint, color)
 
-    def renderSnake(self, centerPoint: Point):
+    def renderSnake(self, snake: Snake):
         greenColor = (0, 128, 0, 255)
 
         # Render body
-        self.renderSquare(centerPoint, color=greenColor)
-        self.renderSquare(Point(centerPoint.x, centerPoint.y - SNAKE_PROPORTIONALLITY), color=greenColor)
-        self.renderSquare(Point(centerPoint.x, centerPoint.y - SNAKE_PROPORTIONALLITY * 2), color=greenColor)
-        self.renderSquare(Point(centerPoint.x, centerPoint.y - SNAKE_PROPORTIONALLITY * 3), color=greenColor)
+        for point in snake.bodyPoints:
+            self.renderSquare(point, color=greenColor)
 
         # Render eyes
         eyesSpreadCoefficient = 10
         eyesSizeCoefficient = 10
-        self.renderSquare(Point(centerPoint.x + SNAKE_PROPORTIONALLITY / eyesSpreadCoefficient, centerPoint.y + SNAKE_PROPORTIONALLITY / eyesSpreadCoefficient), SNAKE_PROPORTIONALLITY / eyesSizeCoefficient)
-        self.renderSquare(Point(centerPoint.x - SNAKE_PROPORTIONALLITY / eyesSpreadCoefficient, centerPoint.y + SNAKE_PROPORTIONALLITY / eyesSpreadCoefficient), SNAKE_PROPORTIONALLITY / eyesSizeCoefficient)
+        self.renderSquare(Point(snake.bodyPoints[0].x + SNAKE_PROPORTIONALLITY / eyesSpreadCoefficient, snake.bodyPoints[0].y + SNAKE_PROPORTIONALLITY / eyesSpreadCoefficient), SNAKE_PROPORTIONALLITY / eyesSizeCoefficient)
+        self.renderSquare(Point(snake.bodyPoints[0].x - SNAKE_PROPORTIONALLITY / eyesSpreadCoefficient, snake.bodyPoints[0].y + SNAKE_PROPORTIONALLITY / eyesSpreadCoefficient), SNAKE_PROPORTIONALLITY / eyesSizeCoefficient)
 
     def renderBeach(self):
         trackWidth = SNAKE_PROPORTIONALLITY
