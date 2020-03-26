@@ -1,9 +1,9 @@
 import pygame
 from classes.Game import Game
-from classes.config import SNAKE_PROPORTIONALLITY
+from classes.config import GAME_SIZE, GAME_HEIGHT, GAME_WIDTH
 
 pygame.init()
-screen = pygame.display.set_mode((SNAKE_PROPORTIONALLITY * 22, SNAKE_PROPORTIONALLITY * 16))
+screen = pygame.display.set_mode((GAME_SIZE * GAME_WIDTH, GAME_SIZE * GAME_HEIGHT))
 pygame.display.set_caption("Snake Game")
 
 done = False

@@ -1,5 +1,5 @@
 from classes.Point import Point
-from classes.config import SNAKE_PROPORTIONALLITY
+from classes.config import GAME_HEIGHT, GAME_WIDTH
 
 DIRECTION_UP = 1
 DIRECTION_RIGHT = 2
@@ -12,9 +12,11 @@ class Snake:
     def __init__(self, externalCenterPoint: Point):
         self.bodyPoints = [
             Point(externalCenterPoint.x, externalCenterPoint.y),
-            Point(externalCenterPoint.x, externalCenterPoint.y - SNAKE_PROPORTIONALLITY), 
-            Point(externalCenterPoint.x, externalCenterPoint.y - SNAKE_PROPORTIONALLITY * 2), 
-            Point(externalCenterPoint.x, externalCenterPoint.y - SNAKE_PROPORTIONALLITY * 3)
+            Point(externalCenterPoint.x, externalCenterPoint.y - 1),
+            Point(externalCenterPoint.x, externalCenterPoint.y - 2),
+            Point(externalCenterPoint.x, externalCenterPoint.y - 3),
+            Point(externalCenterPoint.x, externalCenterPoint.y - 4),
+            Point(externalCenterPoint.x, externalCenterPoint.y - 5)
         ]
         self.direction = DIRECTION_UP
 
@@ -25,7 +27,7 @@ class Snake:
         self.moveBody(savedHeadPoint)
 
     def moveHead(self):
-        movementSpeed = SNAKE_PROPORTIONALLITY  # VALKA
+        movementSpeed = 1  # VALKA
 
         if self.direction == DIRECTION_UP:
             self.bodyPoints[0].y += movementSpeed
@@ -39,14 +41,14 @@ class Snake:
         self.teleportHead()
 
     def teleportHead(self):
-        if self.bodyPoints[0].y >= SNAKE_PROPORTIONALLITY * 16:
-            self.bodyPoints[0].y = SNAKE_PROPORTIONALLITY / 2
-        elif self.bodyPoints[0].y == SNAKE_PROPORTIONALLITY * -0.5:
-            self.bodyPoints[0].y = SNAKE_PROPORTIONALLITY * 16 - SNAKE_PROPORTIONALLITY / 2
-        elif self.bodyPoints[0].x >= SNAKE_PROPORTIONALLITY * 21.6:
-            self.bodyPoints[0].x = SNAKE_PROPORTIONALLITY - SNAKE_PROPORTIONALLITY / 2
-        elif self.bodyPoints[0].x == SNAKE_PROPORTIONALLITY / 2 - SNAKE_PROPORTIONALLITY:
-            self.bodyPoints[0].x = SNAKE_PROPORTIONALLITY * 21.5
+        if self.bodyPoints[0].y >= GAME_HEIGHT:
+            self.bodyPoints[0].y = 0.5
+        elif self.bodyPoints[0].y == -0.5:
+            self.bodyPoints[0].y = GAME_HEIGHT - 0.5
+        elif self.bodyPoints[0].x >= GAME_WIDTH + 0.5:
+            self.bodyPoints[0].x = 0.5
+        elif self.bodyPoints[0].x == -0.5:
+            self.bodyPoints[0].x = GAME_WIDTH - 0.5
 
     def moveBody(self, savedHeadPoint: Point):
         for pointIndex in reversed(range(2, len(self.bodyPoints))):
