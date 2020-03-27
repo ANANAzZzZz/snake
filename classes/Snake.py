@@ -1,3 +1,5 @@
+import random
+
 from classes.Point import Point
 from classes.config import GAME_HEIGHT, GAME_WIDTH
 
@@ -18,6 +20,7 @@ class Snake:
         ]
         self.direction = DIRECTION_UP
         self.alive = True
+        self.color = self.generateColor()
 
         # Not every snake has that
         self.previousBodyPoint = Point(externalCenterPoint.x, externalCenterPoint.y - 4)
@@ -80,8 +83,35 @@ class Snake:
     def checkForDeath(self):
         for pointIndex in range(1, len(self.bodyPoints)):
             if self.bodyPoints[0].x == self.bodyPoints[pointIndex].x and self.bodyPoints[0].y == self.bodyPoints[pointIndex].y:
-                self.alive = False
+                self.die()
+
+    def checkForOtherSnakeCollision(self, snake):
+        for snakeBodyPoint in snake.bodyPoints:
+            if self.bodyPoints[0].x == snakeBodyPoint.x and self.bodyPoints[0].y == snakeBodyPoint.y:
+                self.die()
+
+    def die(self):
+        self.alive = False
 
     def grow(self):
         newBodyPoint = Point(self.previousBodyPoint.x, self.previousBodyPoint.y)
         self.bodyPoints.append(newBodyPoint)
+
+    def generateRandomColor(self):
+        randomInt = random.randint(0, 6)
+
+        if randomInt == 0:
+            return 160, 0, 0
+        elif randomInt == 1:
+            return 160, 160, 0
+        elif randomInt == 2:
+            return 0, 160, 0
+        elif randomInt == 3:
+            return 0, 160, 160
+        elif randomInt == 4:
+            return 0, 0, 160
+        elif randomInt == 5:
+            return 160, 0, 160
+        else:
+            return 0, 0, 0
+

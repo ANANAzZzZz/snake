@@ -20,16 +20,37 @@ class Game:
         super().__init__()
 
         self.snake = Snake(Point(5.5, 5.5))
+        self.snake2 = Snake(Point(9.5, 5.5))
+
         self.apple = self.generateApple()
+
+    def processUserInput(self):
+        firstSnakeDirectionChanged = False
+        secondSnakeDirectionChanged = False
+
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if not firstSnakeDirectionChanged:
+                    firstSnakeDirectionChanged = self.onFirstSnakeKeyPress(event.key)
+                if not secondSnakeDirectionChanged:
+                    secondSnakeDirectionChanged = self.onSecondSnakeKeyPress(event.key)
 
     def generateApple(self):
         x = random.randint(0, GAME_WIDTH - 1) + 0.5
         y = random.randint(0, GAME_HEIGHT - 1) + 0.5
         applePoint = Point(x, y)
 
+        for snakeBodyPoint in self.snake.bodyPoints:
+            if snakeBodyPoint.x == applePoint.x and snakeBodyPoint.y == applePoint.y:
+                return self.generateApple()
+
+        for snakeBodyPoint in self.snake2.bodyPoints:
+            if snakeBodyPoint.x == applePoint.x and snakeBodyPoint.y == applePoint.y:
+                return self.generateApple()
+
         return Apple(applePoint)
 
-    def onKeyPress(self, key):
+    def onFirstSnakeKeyPress(self, key):
         newSnakeDirection = 0
 
         if key == pygame.K_UP:
@@ -43,20 +64,50 @@ class Game:
 
         self.snake.changeDirection(newSnakeDirection)
 
+        return newSnakeDirection != 0
+
+    def onSecondSnakeKeyPress(self, key):
+        newSnakeDirection = 0
+
+        if key == pygame.K_w:
+            newSnakeDirection = DIRECTION_DOWN
+        elif key == pygame.K_d:
+            newSnakeDirection = DIRECTION_RIGHT
+        elif key == pygame.K_s:
+            newSnakeDirection = DIRECTION_UP
+        elif key == pygame.K_a:
+            newSnakeDirection = DIRECTION_LEFT
+
+        self.snake2.changeDirection(newSnakeDirection)
+
+        return newSnakeDirection != 0
+
     def update(self, screen):
         self.clearScreen(screen)
 
         self.snake.move()
+        self.snake2.move()
 
-        if self.snake.bodyPoints[0].x == self.apple.point.x and self.snake.bodyPoints[0].y == self.apple.point.y:
+        self.snake.checkForOtherSnakeCollision(self.snake2)
+        self.snake2.checkForOtherSnakeCollision(self.snake)
+
+        if self.hasSnakeAteApple(self.snake):
             self.apple = self.generateApple()
             self.snake.grow()
-        
+
+        if self.hasSnakeAteApple(self.snake2):
+            self.apple = self.generateApple()
+            self.snake2.grow()
+
         self.renderBeach(screen)
         self.renderApple(screen, self.apple)
         self.renderSnake(screen, self.snake)
+        self.renderSnake(screen, self.snake2)
 
         pygame.display.flip()
+
+    def hasSnakeAteApple(self, snake: Snake):
+        return snake.bodyPoints[0].x == self.apple.point.x and snake.bodyPoints[0].y == self.apple.point.y
 
     def clearScreen(self, screen):
         screen.fill(COLOR_WHITE)
@@ -93,7 +144,7 @@ class Game:
         self.renderSnakeEyes(screen, snake)
 
         for point in snake.bodyPoints:
-            self.renderSquare(screen, point, color=COLOR_GREEN)
+            self.renderSquare(screen, point, color=snake.color)
 
     def renderSnakeEyes(self, screen, snake):
         eyesSpreadCoefficient = 0.2
