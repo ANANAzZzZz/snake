@@ -1,7 +1,7 @@
 import random
 
-from classes.Point import Point
-from classes.config import GAME_HEIGHT, GAME_WIDTH
+from library.classes.Point import Point
+from library.config import GAME_HEIGHT, GAME_WIDTH
 
 DIRECTION_UP = 1
 DIRECTION_RIGHT = 2
@@ -20,7 +20,7 @@ class Snake:
         ]
         self.direction = DIRECTION_UP
         self.alive = True
-        self.color = self.generateColor()
+        self.color = self.generateRandomColor()
 
         # Not every snake has that
         self.previousBodyPoint = Point(externalCenterPoint.x, externalCenterPoint.y - 4)

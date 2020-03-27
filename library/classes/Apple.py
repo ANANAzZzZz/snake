@@ -1,4 +1,4 @@
-from classes import Point
+from library.classes import Point
 
 
 class Apple:

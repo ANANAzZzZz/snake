@@ -1,6 +1,7 @@
 import pygame
-from classes.Game import Game
-from classes.config import GAME_SIZE, GAME_HEIGHT, GAME_WIDTH
+
+from library.classes.Game import Game
+from library.config import GAME_SIZE, GAME_WIDTH, GAME_HEIGHT
 
 pygame.init()
 screen = pygame.display.set_mode((GAME_SIZE * GAME_WIDTH, GAME_SIZE * GAME_HEIGHT))

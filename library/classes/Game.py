@@ -2,10 +2,10 @@ import random
 
 import pygame
 
-from classes.Apple import Apple
-from classes.Point import Point
-from classes.Snake import Snake, DIRECTION_UP, DIRECTION_RIGHT, DIRECTION_DOWN, DIRECTION_LEFT
-from classes.config import GAME_SIZE, GAME_HEIGHT, GAME_WIDTH
+from library.classes.Apple import Apple
+from library.classes.Point import Point
+from library.classes.Snake import Snake, DIRECTION_UP, DIRECTION_RIGHT, DIRECTION_DOWN, DIRECTION_LEFT
+from library.config import GAME_SIZE, GAME_HEIGHT, GAME_WIDTH
 
 COLOR_WHITE = (255, 255, 255)
 COLOR_GREEN = (0, 128, 0)
