@@ -21,14 +21,18 @@ class Game:
         self.snake = Snake(snakeCenterPoint)
 
     def onKeyPress(self, key):
+        newSnakeDirection = 0
+
         if key == pygame.K_UP:
-            self.snake.direction = DIRECTION_DOWN
+            newSnakeDirection = DIRECTION_DOWN
         elif key == pygame.K_RIGHT:
-            self.snake.direction = DIRECTION_RIGHT
+            newSnakeDirection = DIRECTION_RIGHT
         elif key == pygame.K_DOWN:
-            self.snake.direction = DIRECTION_UP
+            newSnakeDirection = DIRECTION_UP
         elif key == pygame.K_LEFT:
-            self.snake.direction = DIRECTION_LEFT
+            newSnakeDirection = DIRECTION_LEFT
+
+        self.snake.changeDirection(newSnakeDirection)
 
     def update(self, screen):
         self.clearScreen(screen)

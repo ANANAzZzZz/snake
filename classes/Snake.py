@@ -20,6 +20,16 @@ class Snake:
         ]
         self.direction = DIRECTION_UP
 
+    def changeDirection(self, wantedDirection: int):
+        if wantedDirection == DIRECTION_DOWN and self.direction != DIRECTION_UP:
+            self.direction = wantedDirection
+        elif wantedDirection == DIRECTION_RIGHT and self.direction != DIRECTION_LEFT:
+            self.direction = wantedDirection
+        elif wantedDirection == DIRECTION_UP and self.direction != DIRECTION_DOWN:
+            self.direction = wantedDirection
+        elif wantedDirection == DIRECTION_LEFT and self.direction != DIRECTION_RIGHT:
+            self.direction = wantedDirection
+
     def move(self):
         savedHeadPoint = Point(self.bodyPoints[0].x, self.bodyPoints[0].y)
 
