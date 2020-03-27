@@ -1,6 +1,8 @@
 import random
 
 import pygame
+
+from classes.Apple import Apple
 from classes.Point import Point
 from classes.Snake import Snake, DIRECTION_UP, DIRECTION_RIGHT, DIRECTION_DOWN, DIRECTION_LEFT
 from classes.config import GAME_SIZE, GAME_HEIGHT, GAME_WIDTH
@@ -9,6 +11,7 @@ COLOR_WHITE = (255, 255, 255)
 COLOR_GREEN = (0, 128, 0)
 COLOR_BLACK = (0, 0, 0)
 COLOR_YELLOW = (207, 207, 0)
+COLOR_RED = (255, 0, 0)
 
 
 class Game:
@@ -16,9 +19,15 @@ class Game:
     def __init__(self):
         super().__init__()
 
-        snakeCenterPoint = Point(5.5, 5.5)
+        self.snake = Snake(Point(5.5, 5.5))
+        self.apple = self.generateApple()
 
-        self.snake = Snake(snakeCenterPoint)
+    def generateApple(self):
+        x = random.randint(0, GAME_WIDTH - 1) + 0.5
+        y = random.randint(0, GAME_HEIGHT - 1) + 0.5
+        applePoint = Point(x, y)
+
+        return Apple(applePoint)
 
     def onKeyPress(self, key):
         newSnakeDirection = 0
@@ -38,7 +47,13 @@ class Game:
         self.clearScreen(screen)
 
         self.snake.move()
+
+        if self.snake.bodyPoints[0].x == self.apple.point.x and self.snake.bodyPoints[0].y == self.apple.point.y:
+            self.apple = self.generateApple()
+            self.snake.grow()
+        
         self.renderBeach(screen)
+        self.renderApple(screen, self.apple)
         self.renderSnake(screen, self.snake)
 
         pygame.display.flip()
@@ -70,6 +85,9 @@ class Game:
         self.renderLine(screen, topLeftPoint, topRightPoint, color)
         self.renderLine(screen, bottomLeftPoint, topLeftPoint, color)
         self.renderLine(screen, bottomRightPoint, topRightPoint, color)
+
+    def renderApple(self, screen, apple: Apple):
+        self.renderSquare(screen, apple.point, color=COLOR_RED)
 
     def renderSnake(self, screen, snake: Snake):
         self.renderSnakeEyes(screen, snake)

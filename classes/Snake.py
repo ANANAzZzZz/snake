@@ -15,11 +15,12 @@ class Snake:
             Point(externalCenterPoint.x, externalCenterPoint.y - 1),
             Point(externalCenterPoint.x, externalCenterPoint.y - 2),
             Point(externalCenterPoint.x, externalCenterPoint.y - 3),
-            Point(externalCenterPoint.x, externalCenterPoint.y - 4),
-            Point(externalCenterPoint.x, externalCenterPoint.y - 5)
         ]
         self.direction = DIRECTION_UP
         self.alive = True
+
+        # Not every snake has that
+        self.previousBodyPoint = Point(externalCenterPoint.x, externalCenterPoint.y - 4)
 
     def changeDirection(self, wantedDirection: int):
         if wantedDirection == DIRECTION_DOWN and self.direction != DIRECTION_UP:
@@ -67,6 +68,8 @@ class Snake:
             self.bodyPoints[0].x = GAME_WIDTH - 0.5
 
     def moveBody(self, savedHeadPoint: Point):
+        self.previousBodyPoint = self.bodyPoints[len(self.bodyPoints) - 1]
+
         for pointIndex in reversed(range(2, len(self.bodyPoints))):
             self.bodyPoints[pointIndex].x = self.bodyPoints[pointIndex - 1].x
             self.bodyPoints[pointIndex].y = self.bodyPoints[pointIndex - 1].y
@@ -78,3 +81,7 @@ class Snake:
         for pointIndex in range(1, len(self.bodyPoints)):
             if self.bodyPoints[0].x == self.bodyPoints[pointIndex].x and self.bodyPoints[0].y == self.bodyPoints[pointIndex].y:
                 self.alive = False
+
+    def grow(self):
+        newBodyPoint = Point(self.previousBodyPoint.x, self.previousBodyPoint.y)
+        self.bodyPoints.append(newBodyPoint)
