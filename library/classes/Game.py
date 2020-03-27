@@ -41,11 +41,11 @@ class Game:
         applePoint = Point(x, y)
 
         for snakeBodyPoint in self.snake.bodyPoints:
-            if snakeBodyPoint.x == applePoint.x and snakeBodyPoint.y == applePoint.y:
+            if snakeBodyPoint == applePoint:
                 return self.generateApple()
 
         for snakeBodyPoint in self.snake2.bodyPoints:
-            if snakeBodyPoint.x == applePoint.x and snakeBodyPoint.y == applePoint.y:
+            if snakeBodyPoint == applePoint:
                 return self.generateApple()
 
         return Apple(applePoint)
@@ -107,7 +107,7 @@ class Game:
         pygame.display.flip()
 
     def hasSnakeAteApple(self, snake: Snake):
-        return snake.bodyPoints[0].x == self.apple.point.x and snake.bodyPoints[0].y == self.apple.point.y
+        return snake.bodyPoints[0] == self.apple.point
 
     def clearScreen(self, screen):
         screen.fill(COLOR_WHITE)

@@ -82,12 +82,12 @@ class Snake:
 
     def checkForDeath(self):
         for pointIndex in range(1, len(self.bodyPoints)):
-            if self.bodyPoints[0].x == self.bodyPoints[pointIndex].x and self.bodyPoints[0].y == self.bodyPoints[pointIndex].y:
+            if self.bodyPoints[0] == self.bodyPoints[pointIndex]:
                 self.die()
 
     def checkForOtherSnakeCollision(self, snake):
         for snakeBodyPoint in snake.bodyPoints:
-            if self.bodyPoints[0].x == snakeBodyPoint.x and self.bodyPoints[0].y == snakeBodyPoint.y:
+            if self.bodyPoints[0] == snakeBodyPoint:
                 self.die()
 
     def die(self):
@@ -114,4 +114,3 @@ class Snake:
             return 160, 0, 160
         else:
             return 0, 0, 0
-
