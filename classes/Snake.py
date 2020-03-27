@@ -19,6 +19,7 @@ class Snake:
             Point(externalCenterPoint.x, externalCenterPoint.y - 5)
         ]
         self.direction = DIRECTION_UP
+        self.alive = True
 
     def changeDirection(self, wantedDirection: int):
         if wantedDirection == DIRECTION_DOWN and self.direction != DIRECTION_UP:
@@ -31,10 +32,15 @@ class Snake:
             self.direction = wantedDirection
 
     def move(self):
+        if not self.alive:
+            return
+
         savedHeadPoint = Point(self.bodyPoints[0].x, self.bodyPoints[0].y)
 
         self.moveHead()
         self.moveBody(savedHeadPoint)
+
+        self.checkForDeath()
 
     def moveHead(self):
         movementSpeed = 1  # VALKA
@@ -67,3 +73,8 @@ class Snake:
 
         self.bodyPoints[1].x = savedHeadPoint.x
         self.bodyPoints[1].y = savedHeadPoint.y
+
+    def checkForDeath(self):
+        for pointIndex in range(1, len(self.bodyPoints)):
+            if self.bodyPoints[0].x == self.bodyPoints[pointIndex].x and self.bodyPoints[0].y == self.bodyPoints[pointIndex].y:
+                self.alive = False
